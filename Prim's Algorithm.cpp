@@ -1,51 +1,40 @@
 #include <iostream>
 using namespace std;
 
-#define INF 999
-
 int main()
 {
-    int n;
-    int cost[10][10];
-    int visited[10] = {0};
-    int edges = 0;
+    int n = 5;
+
+    int cost[5][5] = {
+        {0, 2, 0, 6, 0},
+        {2, 0, 3, 8, 5},
+        {0, 3, 0, 0, 7},
+        {6, 8, 0, 0, 9},
+        {0, 5, 7, 9, 0}
+    };
+
+    int visited[5] = {0};
+    int edgeCount = 0;
     int totalCost = 0;
 
-    cout << "Enter number of vertices: ";
-    cin >> n;
-
-    cout << "Enter the cost adjacency matrix:" << endl;
-
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            cin >> cost[i][j];
-
-            if (cost[i][j] == 0)
-                cost[i][j] = INF;
-        }
-    }
-
-    // Start from vertex 0
     visited[0] = 1;
 
-    cout << "\nEdges in Minimum Spanning Tree:\n";
+    cout << "Prim's Algorithm\n";
+    cout << "Minimum Spanning Tree:\n\n";
 
-    while (edges < n - 1)
+    while (edgeCount < n - 1)
     {
-        int min = INF;
+        int min = 999;
         int u = -1;
         int v = -1;
 
-        // Find minimum edge
         for (int i = 0; i < n; i++)
         {
             if (visited[i])
             {
                 for (int j = 0; j < n; j++)
                 {
-                    if (!visited[j] && cost[i][j] < min)
+                    if (!visited[j] && cost[i][j] != 0 && cost[i][j] < min)
                     {
                         min = cost[i][j];
                         u = i;
@@ -55,11 +44,12 @@ int main()
             }
         }
 
-        cout << u << " - " << v << " : " << min << endl;
+        cout << "Edge: " << u << " - " << v
+             << "  Cost: " << min << endl;
 
         totalCost += min;
         visited[v] = 1;
-        edges++;
+        edgeCount++;
     }
 
     cout << "\nMinimum Cost = " << totalCost << endl;
